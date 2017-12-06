@@ -73,7 +73,7 @@ echo "$extra" | sudo tee -a /etc/haproxy/haproxy.cfg
 echo "Initializing IPFS and IPFS cluster…"
 ipfs init
 tmp=$(mktemp)
-jq '.Discovery.MDNS.Enabled = false | .Bootstrap = []' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
+jq '.Bootstrap = []' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
 ipfs bootstrap add /ip4/80.209.230.17/tcp/4001/ipfs/QmQUoRhFDqYNYtzRXuv7tcQ2ksQnSAWNaWtvtopSBSn4Bi
 
 CLUSTER_SECRET=b57e85e353280d0a220010ae3999431c99a1718b85bf03a231f696bf48a9f986 ipfs-cluster-service init
