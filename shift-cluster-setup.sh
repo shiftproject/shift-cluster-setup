@@ -87,4 +87,4 @@ echo "Starting HAProxy…"
 mkdir ~/logs
 sudo service haproxy restart
 nohup ipfs daemon > ~/logs/ipfs.log 2>&1 &
-nohup ipfs-cluster-service --bootstrap /ip4/80.209.230.17/tcp/9096/ipfs/QmZyixbZdEn4qHj5JBjYP5wnid5ir1yWSoYTsVHFRyC3LM -f > ~/logs/ipfs-cluster.log 2>&1 &
+nohup ipfs-cluster-service --bootstrap /ip4/45.77.136.112/tcp/9096/ipfs/QmTRMG3tTFVVMNzBQm9pS8aUVMMmbJGHmbTKNm3XQ5h5sP -f > ~/logs/ipfs-cluster.log 2>&1 &
