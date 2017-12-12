@@ -14,7 +14,6 @@
 # sudo ufw enable
 
 # Install IPFS
-user=`whoami`
 echo "Installing IPFS"
 wget https://dist.ipfs.io/ipfs-update/v1.5.2/ipfs-update_v1.5.2_linux-amd64.tar.gz -O ipfs-update.tar.gz
 tar -xzvf ipfs-update.tar.gz
@@ -79,6 +78,7 @@ ipfs bootstrap add /ip4/80.209.230.17/tcp/4001/ipfs/QmQUoRhFDqYNYtzRXuv7tcQ2ksQn
 CLUSTER_SECRET=b57e85e353280d0a220010ae3999431c99a1718b85bf03a231f696bf48a9f986 ipfs-cluster-service init
 jq '.consensus.raft.heartbeat_timeout = "10s" | .consensus.raft.election_timeout = "10s" | .cluster.leave_on_shutdown = true | .cluster.replication_factor = 2' ~/.ipfs-cluster/service.json > "$tmp" && mv "$tmp" ~/.ipfs-cluster/service.json
 
+user=`whoami`
 sudo chown $user:$user ~/.ipfs
 sudo chown $user:$user ~/.ipfs-cluster
 
