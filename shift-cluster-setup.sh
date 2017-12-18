@@ -55,6 +55,14 @@ extra="
 frontend https-in
     bind *:443 ssl crt /etc/ssl/private/shift.pem
     mode http
+
+    # Add CORS headers when Origin header is present
+    capture request header origin len 128
+    http-response add-header Access-Control-Allow-Origin %[capture.req.hdr(0)] if { capture.req.hdr(0) -m found }
+    rspadd Access-Control-Allow-Methods:\ GET,\ HEAD,\ OPTIONS,\ POST,\ PUT  if { capture.req.hdr(0) -m found }
+    rspadd Access-Control-Allow-Credentials:\ true  if { capture.req.hdr(0) -m found }
+    rspadd Access-Control-Allow-Headers:\ Origin,\ Accept,\ X-Requested-With,\ Content-Type,\ Access-Control-Request-Method,\ Access-Control-Request-Headers,\ Authorization  if { capture.req.hdr(0) -m found }
+
     acl is_cluster_api_path path_beg /pins
     acl is_api_path path_beg /api/v0/ls /api/v0/add /api/v0/cat /api/v0/object/links /api/v0/object/patch/add-link /api/v0/object/atch/rm-link /api/v0/key/gen /api/v0/key/list /api/v0/name/publish /api/v0/name/resolve /api/v0/ping /api/v0/version /api/v0/swarm/peers /api/v0/swarm/addrs/local /api/v0/stats/bw /api/v0/stats/repo /api/v0/stats/
     use_backend ipfs_cluster_api if is_cluster_api_path
@@ -63,6 +71,12 @@ frontend https-in
 
 backend ipfs_api
     mode http
+
+    # For some reason the ipfs http API will return a 403 if the Origin or
+    # Referrer header is included on the request without any CORS hosts defined
+    # in the config. Stripping them here fixes it since HAProxy will add them.
+    http-request del-header Origin
+    http-request del-header Referer
     server api 127.0.0.1:5001
 
 backend ipfs_cluster_api
