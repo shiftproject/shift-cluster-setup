@@ -67,7 +67,7 @@ backend ipfs_api
 
 backend ipfs_cluster_api
     mode http
-    server api 127.0.0.1:9095
+    server api 127.0.0.1:9094
 
 backend ipfs
     mode http
