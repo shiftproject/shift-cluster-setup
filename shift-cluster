@@ -4,6 +4,14 @@
 #    Make sure to run the setup described in the README.md first!    #
 ######################################################################
 
+check_hash() {
+    file_hash=`shasum $1 | cut -d " " -f1`
+    if [ "$file_hash" != "$2" ] ; then
+        echo "HASH for $1 does not match expected hash"
+        exit 1
+    fi
+}
+
 # Downloads the latest IPFS binaries from the Shift IPFS cluster – inception
 install_binaries() {
     mkdir -p ~/bin
@@ -11,16 +19,19 @@ install_binaries() {
     if [ ! -f ~/bin/ipfs ] ; then
         wget -O ~/bin/ipfs https://gateway-test.shiftnrg.org/ipfs/QmY2qzXDDczVZ8UWR6G1LHiqTBPhhobRBgJsiyDkBfMNiP
         chmod +x ~/bin/ipfs
+        check_hash ~/bin/ipfs "9fc871c2522e0bb1fa0ce59e9dc968cb6658ac1d"
     fi
 
     if [ ! -f ~/bin/ipfs-cluster-ctl ] ; then
         wget -O ~/bin/ipfs-cluster-ctl https://gateway-test.shiftnrg.org/ipfs/QmahAfgUBiYMAGTPhpAeBvELbdCxUkybPCPPmRhTbZeYxv
         chmod +x ~/bin/ipfs-cluster-ctl
+        check_hash ~/bin/ipfs-cluster-ctl "6a63bb284574924a931e4d1f165b4be1d17b42d8"
     fi
 
     if [ ! -f ~/bin/ipfs-cluster-service ] ; then
         wget -O ~/bin/ipfs-cluster-service https://gateway-test.shiftnrg.org/ipfs/QmRrGMVEmSm9kGiFBYb5RB9rwtLphvDeucbPT1eVhR3q8u
         chmod +x ~/bin/ipfs-cluster-service
+        check_hash ~/bin/ipfs-cluster-service "be68fd0c1f6a565a3d1315546b76d0930457440f"
     fi
 }
 
