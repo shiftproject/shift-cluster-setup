@@ -9,7 +9,7 @@ install_binaries() {
     mkdir -p ~/bin
     echo "Downloading latest IPFS binaries…"
     if [ ! -f ~/bin/ipfs ] ; then
-        wget -O ~/bin/ipfs https://gateway-cluster-test.shiftnrg.org/ipfs/QmQaUQyi48kTC77bzYhk1zqKCVpTVg6oddgxue8kg3n3q1
+        wget -O ~/bin/ipfs https://gateway-cluster-test.shiftnrg.org/ipfs/QmY2qzXDDczVZ8UWR6G1LHiqTBPhhobRBgJsiyDkBfMNiP
         chmod +x ~/bin/ipfs
     fi
 
