@@ -9,17 +9,17 @@ install_binaries() {
     mkdir -p ~/bin
     echo "Downloading latest IPFS binaries…"
     if [ ! -f ~/bin/ipfs ] ; then
-        wget -O ~/bin/ipfs https://gateway-cluster-test.shiftnrg.org/ipfs/QmY2qzXDDczVZ8UWR6G1LHiqTBPhhobRBgJsiyDkBfMNiP
+        wget -O ~/bin/ipfs https://gateway-test.shiftnrg.org/ipfs/QmY2qzXDDczVZ8UWR6G1LHiqTBPhhobRBgJsiyDkBfMNiP
         chmod +x ~/bin/ipfs
     fi
 
     if [ ! -f ~/bin/ipfs-cluster-ctl ] ; then
-        wget -O ~/bin/ipfs-cluster-ctl https://gateway-cluster-test.shiftnrg.org/ipfs/QmahAfgUBiYMAGTPhpAeBvELbdCxUkybPCPPmRhTbZeYxv
+        wget -O ~/bin/ipfs-cluster-ctl https://gateway-test.shiftnrg.org/ipfs/QmahAfgUBiYMAGTPhpAeBvELbdCxUkybPCPPmRhTbZeYxv
         chmod +x ~/bin/ipfs-cluster-ctl
     fi
 
     if [ ! -f ~/bin/ipfs-cluster-service ] ; then
-        wget -O ~/bin/ipfs-cluster-service https://gateway-cluster-test.shiftnrg.org/ipfs/QmRrGMVEmSm9kGiFBYb5RB9rwtLphvDeucbPT1eVhR3q8u
+        wget -O ~/bin/ipfs-cluster-service https://gateway-test.shiftnrg.org/ipfs/QmRrGMVEmSm9kGiFBYb5RB9rwtLphvDeucbPT1eVhR3q8u
         chmod +x ~/bin/ipfs-cluster-service
     fi
 }
