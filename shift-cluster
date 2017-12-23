@@ -79,6 +79,7 @@ defaults
 
 frontend https-in
     bind *:443 ssl crt /etc/ssl/private/shift.pem
+    bind *:80
     mode http
     # Add CORS headers when Origin header is present
     capture request header origin len 128
