@@ -37,7 +37,14 @@ sudo ufw enable
 
 ## Running
 
-After the prerequisites are done, you should copy the `shift-cluster` script to somewhere on your system.
+After the prerequisites are done, you should copy the `shift-cluster` script to somewhere on your system inside your $PATH.
+
+Or you can run it using
+
+```
+chmod +x shift-cluster
+./shift-cluster [command]
+```
 
 ### Commands
 
