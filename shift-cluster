@@ -88,7 +88,7 @@ frontend https-in
     rspadd Access-Control-Allow-Headers:\ Origin,\ Accept,\ X-Requested-With,\ Content-Type,\ Access-Control-Request-Method,\ Access-Control-Request-Headers,\ Authorization  if { capture.req.hdr(0) -m found }
 
     acl is_cluster_api_path path_beg /pins
-    acl is_api_path path_beg /api/v0/ls /api/v0/add /api/v0/cat /api/v0/object/links /api/v0/object/patch/add-link /api/v0/object/atch/rm-link /api/v0/key/gen /api/v0/key/list /api/v0/name/publish /api/v0/name/resolve /api/v0/ping /api/v0/version /api/v0/swarm/peers /api/v0/swarm/addrs/local /api/v0/stats/bw /api/v0/stats/repo /api/v0/stats/
+    acl is_api_path path_beg /api/v0/ls /api/v0/add /api/v0/cat /api/v0/object/links /api/v0/object/patch/add-link /api/v0/object/patch/rm-link /api/v0/key/gen /api/v0/key/list /api/v0/name/publish /api/v0/name/resolve /api/v0/ping /api/v0/version /api/v0/swarm/peers /api/v0/swarm/addrs/local /api/v0/stats/bw /api/v0/stats/repo /api/v0/stats/
     use_backend ipfs_cluster_api if is_cluster_api_path
     use_backend ipfs_api if is_api_path
     default_backend ipfs
