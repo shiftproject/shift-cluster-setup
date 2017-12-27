@@ -144,7 +144,7 @@ initialize_ipfs() {
     tmp=$(mktemp)
     jq '.Bootstrap = []' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
 
-    CLUSTER_SECRET=b57e85e353280d0a220010ae3999431c99a1718b85bf03a231f696bf48a9f986 ipfs-cluster-service init
+    CLUSTER_SECRET=5cdc314d43fb59f3fcd55a947d3aabec63c62b7ca1d77a5c1354a3a16a563faa ipfs-cluster-service init
     jq '.cluster.peers = [] | .cluster.bootstrap = [] | .consensus.raft.heartbeat_timeout = "10s" | .consensus.raft.election_timeout = "10s" | .cluster.leave_on_shutdown = true | .cluster.replication_factor = 3' ~/.ipfs-cluster/service.json > "$tmp" && mv "$tmp" ~/.ipfs-cluster/service.json
 
     user=`whoami`
