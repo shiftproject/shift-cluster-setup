@@ -191,7 +191,7 @@ start() {
 
 stop() {
     sudo /etc/init.d/haproxy stop
-    pkill -f ipfs
+    pkill -HUP -f ipfs
     echo "SHIFT cluster stopped"
 }
 
