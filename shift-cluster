@@ -17,21 +17,21 @@ install_binaries() {
     mkdir -p ~/bin
     echo "Downloading latest IPFS binaries…"
     if [ ! -f ~/bin/ipfs ] ; then
-        wget -O ~/bin/ipfs https://gateway-test.shiftnrg.org/ipfs/QmY2qzXDDczVZ8UWR6G1LHiqTBPhhobRBgJsiyDkBfMNiP
+        wget -O ~/bin/ipfs https://gateway-test.shiftnrg.org/ipfs/QmUqwjB6941nFxvZ23ccF6bWjFBkkNj9ZHm9UzocfwNpdK
         chmod +x ~/bin/ipfs
-        check_hash ~/bin/ipfs "9fc871c2522e0bb1fa0ce59e9dc968cb6658ac1d"
+        check_hash ~/bin/ipfs "05c6ec63645ae5f40fe853fa64a630f24d6bc6fc"
     fi
 
     if [ ! -f ~/bin/ipfs-cluster-ctl ] ; then
-        wget -O ~/bin/ipfs-cluster-ctl https://gateway-test.shiftnrg.org/ipfs/QmahAfgUBiYMAGTPhpAeBvELbdCxUkybPCPPmRhTbZeYxv
+        wget -O ~/bin/ipfs-cluster-ctl https://gateway-test.shiftnrg.org/ipfs/QmaCokVAEPcx9e6ZkYMgaAmhk6Y4NaBXoNVg7WFpRqydBc
         chmod +x ~/bin/ipfs-cluster-ctl
-        check_hash ~/bin/ipfs-cluster-ctl "6a63bb284574924a931e4d1f165b4be1d17b42d8"
+        check_hash ~/bin/ipfs-cluster-ctl "955948b2521e1c61e784f729c76d1c9ee2fb8a03"
     fi
 
     if [ ! -f ~/bin/ipfs-cluster-service ] ; then
-        wget -O ~/bin/ipfs-cluster-service https://gateway-test.shiftnrg.org/ipfs/QmRrGMVEmSm9kGiFBYb5RB9rwtLphvDeucbPT1eVhR3q8u
+        wget -O ~/bin/ipfs-cluster-service https://gateway-test.shiftnrg.org/ipfs/QmVMiT4H7VwKHegTLvKuUajWqsg8kqWeD7uc2aj8TeT2a7
         chmod +x ~/bin/ipfs-cluster-service
-        check_hash ~/bin/ipfs-cluster-service "be68fd0c1f6a565a3d1315546b76d0930457440f"
+        check_hash ~/bin/ipfs-cluster-service "f6e9f7e7261611bb8239dcb80661b046d9ff356e"
     fi
 }
 
