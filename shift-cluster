@@ -168,6 +168,13 @@ install() {
     echo "SHIFT cluster successfully installed"
 }
 
+update() {
+    stop
+    cd ~/bin
+    rm ipfs ipfs-cluster-ctl ipfs-cluster-service
+    install_binaries
+}
+
 remove() {
     stop
     rm ~/bin/ipfs
@@ -211,6 +218,9 @@ case $1 in
     "install")
       install
     ;;
+    "update")
+      update
+    ;;
     "remove")
       remove
     ;;
@@ -224,7 +234,7 @@ case $1 in
       check
     ;;
     *)
-    echo "Available options: install, remove, start, stop, check"
+    echo "Available options: install, update, remove, start, stop, check"
     echo "Usage: ./shift-cluster install"
     exit 1
     ;;
