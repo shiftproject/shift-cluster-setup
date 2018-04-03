@@ -144,12 +144,12 @@ initialize_ipfs() {
     tmp=$(mktemp)
     jq '.Bootstrap = []' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
 
-    CLUSTER_SECRET=5cdc314d43fb59f3fcd55a947d3aabec63c62b7ca1d77a5c1354a3a16a563faa ipfs-cluster-service init
-    jq '.cluster.peers = [] | .cluster.bootstrap = [] | .consensus.raft.heartbeat_timeout = "10s" | .consensus.raft.election_timeout = "10s" | .cluster.leave_on_shutdown = true | .cluster.replication_factor = 3' ~/.ipfs-cluster/service.json > "$tmp" && mv "$tmp" ~/.ipfs-cluster/service.json
+    CLUSTER_SECRET=2d926a554430adcefb018be3c4a4a534a34a5f66d965a249c2c20006b586211b ipfs-cluster-service init
+    jq '.cluster.peers = [] | .cluster.bootstrap = [] | .consensus.raft.heartbeat_timeout = "10s" | .consensus.raft.election_timeout = "10s" | .cluster.leave_on_shutdown = true | .cluster.replication_factor_min = 3 | .cluster.replication_factor_max = 5' ~/.ipfs-cluster/service.json > "$tmp" && mv "$tmp" ~/.ipfs-cluster/service.json
 
     swarm_key="/key/swarm/psk/1.0.0/
 /base16/
-4e8b30ef49efcba7cca26690d4c6a743a955b40a01675bfe3de481e7dad0d95f"
+1c5b46b4190fb89496252b2a2b83c65ebc9da822e5cc59df97a876ef9d05b3eb"
     echo "$swarm_key" | sudo tee -a ~/.ipfs/swarm.key > /dev/null
 
     user=`whoami`
