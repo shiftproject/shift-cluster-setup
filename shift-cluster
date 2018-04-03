@@ -185,7 +185,7 @@ start() {
     sudo /etc/init.d/haproxy restart
     nohup ipfs daemon > ~/logs/ipfs.log 2>&1 &
     sleep 2
-    nohup ipfs-cluster-service --bootstrap /ip4/45.77.136.112/tcp/9096/ipfs/QmQzQfwpnHC4KvVYJpXkje5snjg7a8nHYSrHhMA4qhzfHG -f > ~/logs/ipfs-cluster.log 2>&1 &
+    nohup ipfs-cluster-service --bootstrap /ip4/45.77.136.112/tcp/9096/ipfs/QmZXjPy712cuepoiFEFFPLKCx13M22hULNPG7QuvnySTUr -f > ~/logs/ipfs-cluster.log 2>&1 &
     echo "SHIFT cluster started"
 }
 
