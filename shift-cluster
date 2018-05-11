@@ -173,6 +173,7 @@ update() {
     cd ~/bin
     rm ipfs ipfs-cluster-ctl ipfs-cluster-service
     install_binaries
+    # ipfs-cluster-service daemon --upgrade
 }
 
 remove() {
