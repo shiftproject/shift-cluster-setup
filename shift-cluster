@@ -23,15 +23,15 @@ install_binaries() {
     fi
 
     if [ ! -f ~/bin/ipfs-cluster-ctl ] ; then
-        wget -O ~/bin/ipfs-cluster-ctl https://gateway-test.shiftnrg.org/ipfs/QmaCokVAEPcx9e6ZkYMgaAmhk6Y4NaBXoNVg7WFpRqydBc
+        wget -O ~/bin/ipfs-cluster-ctl https://gateway-test.shiftnrg.org/ipfs/QmUxyrovj8U7Fv78pN1aBsoCQHoT9TQdJCN17dmf1sBbWM
         chmod +x ~/bin/ipfs-cluster-ctl
-        check_hash ~/bin/ipfs-cluster-ctl "955948b2521e1c61e784f729c76d1c9ee2fb8a03"
+        check_hash ~/bin/ipfs-cluster-ctl "a65fcf1de54f0ac0606a7ea11779f8d5f9a74d10"
     fi
 
     if [ ! -f ~/bin/ipfs-cluster-service ] ; then
-        wget -O ~/bin/ipfs-cluster-service https://gateway-test.shiftnrg.org/ipfs/QmVMiT4H7VwKHegTLvKuUajWqsg8kqWeD7uc2aj8TeT2a7
+        wget -O ~/bin/ipfs-cluster-service https://gateway-test.shiftnrg.org/ipfs/Qmc8EXcGhZxB1GrqAi5YyW11QbKC4DYRwMQFDH4W7HDcuM
         chmod +x ~/bin/ipfs-cluster-service
-        check_hash ~/bin/ipfs-cluster-service "f6e9f7e7261611bb8239dcb80661b046d9ff356e"
+        check_hash ~/bin/ipfs-cluster-service "586e29fb594c2897072d474a92aa34f336e1fc65"
     fi
 }
 
