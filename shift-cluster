@@ -17,21 +17,15 @@ install_binaries() {
     mkdir -p ~/bin
     echo "Downloading latest IPFS binaries…"
     if [ ! -f ~/bin/ipfs ] ; then
-        wget -O ~/bin/ipfs https://gateway-test.shiftnrg.org/ipfs/QmUqwjB6941nFxvZ23ccF6bWjFBkkNj9ZHm9UzocfwNpdK
+        wget -O ~/bin/ipfs https://phoenix-test.shiftnrg.org/ipfs/QmUqwjB6941nFxvZ23ccF6bWjFBkkNj9ZHm9UzocfwNpdK
         chmod +x ~/bin/ipfs
         check_hash ~/bin/ipfs "05c6ec63645ae5f40fe853fa64a630f24d6bc6fc"
     fi
 
-    if [ ! -f ~/bin/ipfs-cluster-ctl ] ; then
-        wget -O ~/bin/ipfs-cluster-ctl https://gateway-test.shiftnrg.org/ipfs/QmUxyrovj8U7Fv78pN1aBsoCQHoT9TQdJCN17dmf1sBbWM
-        chmod +x ~/bin/ipfs-cluster-ctl
-        check_hash ~/bin/ipfs-cluster-ctl "a65fcf1de54f0ac0606a7ea11779f8d5f9a74d10"
-    fi
-
-    if [ ! -f ~/bin/ipfs-cluster-service ] ; then
-        wget -O ~/bin/ipfs-cluster-service https://gateway-test.shiftnrg.org/ipfs/Qmc8EXcGhZxB1GrqAi5YyW11QbKC4DYRwMQFDH4W7HDcuM
-        chmod +x ~/bin/ipfs-cluster-service
-        check_hash ~/bin/ipfs-cluster-service "586e29fb594c2897072d474a92aa34f336e1fc65"
+    if [ ! -f ~/bin/phoenix-cluster ] ; then
+        wget -O ~/bin/phoenix-cluster https://phoenix-test.shiftnrg.org/ipfs/QmaStk4K4bY7CLyRzFen8obMZdpS26KNmSRuAfYzzHhQfj
+        chmod +x ~/bin/phoenix-cluster
+        check_hash ~/bin/phoenix-cluster "e1a8b74cf20364348990b35f0903700bc528b4e9"
     fi
 }
 
@@ -99,9 +93,9 @@ frontend https-in
     rspadd Access-Control-Allow-Credentials:\ true  if { capture.req.hdr(0) -m found }
     rspadd Access-Control-Allow-Headers:\ Origin,\ Accept,\ X-Requested-With,\ Content-Type,\ Access-Control-Request-Method,\ Access-Control-Request-Headers,\ Authorization  if { capture.req.hdr(0) -m found }
 
-    acl is_cluster_api_path path_beg /pins
+    acl is_cluster_api_path path_beg /pin /stats /peers
     acl is_api_path path_beg /api/v0/ls /api/v0/add /api/v0/cat /api/v0/object/links /api/v0/object/patch/add-link /api/v0/object/patch/rm-link /api/v0/key/gen /api/v0/key/list /api/v0/name/publish /api/v0/name/resolve /api/v0/ping /api/v0/version /api/v0/swarm/peers /api/v0/swarm/addrs/local /api/v0/stats/bw /api/v0/stats/repo /api/v0/stats/
-    use_backend ipfs_cluster_api if is_cluster_api_path
+    use_backend phoenix_cluster_api if is_cluster_api_path
     use_backend ipfs_api if is_api_path
     default_backend ipfs
 
@@ -112,12 +106,12 @@ backend ipfs_api
     http-response add-header Server ipfs_api
     server api 127.0.0.1:5001
 
-backend ipfs_cluster_api
+backend phoenix_cluster_api
     mode http
     acl is_options method OPTIONS
     http-request set-method GET if is_options
-    http-response add-header Server ipfs_cluster_api
-    server api 127.0.0.1:9094
+    http-response add-header Server phoenix_cluster_api
+    server api 127.0.0.1:2473
 
 backend ipfs
     mode http
@@ -144,9 +138,6 @@ initialize_ipfs() {
     tmp=$(mktemp)
     jq '.Bootstrap = []' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
 
-    CLUSTER_SECRET=2d926a554430adcefb018be3c4a4a534a34a5f66d965a249c2c20006b586211b ipfs-cluster-service init
-    jq '.cluster.peers = [] | .cluster.bootstrap = [] | .consensus.raft.heartbeat_timeout = "10s" | .consensus.raft.election_timeout = "10s" | .cluster.leave_on_shutdown = true | .cluster.replication_factor_min = 3 | .cluster.replication_factor_max = 5' ~/.ipfs-cluster/service.json > "$tmp" && mv "$tmp" ~/.ipfs-cluster/service.json
-
     swarm_key="/key/swarm/psk/1.0.0/
 /base16/
 1c5b46b4190fb89496252b2a2b83c65ebc9da822e5cc59df97a876ef9d05b3eb"
@@ -154,7 +145,6 @@ initialize_ipfs() {
 
     user=`whoami`
     sudo chown $user:$user ~/.ipfs
-    sudo chown $user:$user ~/.ipfs-cluster
 }
 
 # Installs what is necessary to run a storage node
@@ -171,20 +161,17 @@ install() {
 update() {
     stop
     cd ~/bin
-    rm ipfs ipfs-cluster-ctl ipfs-cluster-service
+    rm ipfs phoenix-cluster
     install_binaries
-    # ipfs-cluster-service daemon --upgrade
 }
 
 remove() {
     stop
     rm ~/bin/ipfs
-    rm ~/bin/ipfs-cluster-ctl
-    rm ~/bin/ipfs-cluster-service
+    rm ~/bin/phoenix-cluster
     sudo apt-get -y remove haproxy
     sudo rm /etc/ssl/private/shift.pem
     rm -rf ~/.ipfs
-    rm -rf ~/.ipfs-cluster
     echo "SHIFT cluster successfully removed"
 }
 
@@ -193,7 +180,7 @@ start() {
     sudo /etc/init.d/haproxy restart
     nohup ipfs daemon --enable-pubsub-experiment > ~/logs/ipfs.log 2>&1 &
     sleep 2
-    nohup ipfs-cluster-service --bootstrap /ip4/45.77.136.112/tcp/9096/ipfs/QmZXjPy712cuepoiFEFFPLKCx13M22hULNPG7QuvnySTUr -f > ~/logs/ipfs-cluster.log 2>&1 &
+    nohup phoenix-cluster --bootstrap=80.209.230.16:3473 start > ~/logs/phoenix-cluster.log 2>&1 &
     echo "SHIFT cluster started"
 }
 
