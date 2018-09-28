@@ -137,7 +137,7 @@ initialize_ipfs() {
     ipfs init
     tmp=$(mktemp)
     jq '.Bootstrap = []' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
-
+    rm ~/.ipfs/swarm.key 2> /dev/null
     swarm_key="/key/swarm/psk/1.0.0/
 /base16/
 76cc320af0a997b4e495222b6f8216bf808d1d91cfca10db683197534f7ca592"
