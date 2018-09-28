@@ -143,8 +143,21 @@ initialize_ipfs() {
 76cc320af0a997b4e495222b6f8216bf808d1d91cfca10db683197534f7ca592"
     echo "$swarm_key" | sudo tee -a ~/.ipfs/swarm.key > /dev/null
 
+    mkdir ~/.phoenix
+
+    conf="{
+    \"PhoenixPort\": 3473,
+    \"APIPort\": 2473,
+    \"Debug\": false,
+    \"Secret\": \"CHhOkjM9VHGyyeaS8W4kIg32U8u0vGxJ0b7MQSvZ\",
+    \"Replication\": 3
+}"
+
+    echo "$conf" | tee -a ~/.phoenix/config.json > /dev/null
+
     user=`whoami`
     sudo chown $user:$user ~/.ipfs
+    sudo chown $user:$user ~/.phoenix
 }
 
 # Installs what is necessary to run a storage node
@@ -172,6 +185,7 @@ remove() {
     sudo apt-get -y remove haproxy
     sudo rm /etc/ssl/private/shift.pem
     rm -rf ~/.ipfs
+    rm -rf ~/.phoenix
     echo "SHIFT cluster successfully removed"
 }
 
@@ -180,7 +194,7 @@ start() {
     sudo /etc/init.d/haproxy restart
     nohup ipfs daemon --enable-pubsub-experiment > ~/logs/ipfs.log 2>&1 &
     sleep 2
-    nohup phoenix-cluster --bootstrap=80.209.230.16:3473 start > ~/logs/phoenix-cluster.log 2>&1 &
+    nohup phoenix-cluster --bootstrap=80.209.230.16:3473 --config=$HOME/.phoenix/config.json start > ~/logs/phoenix-cluster.log 2>&1 &
     echo "SHIFT cluster started"
 }
 
