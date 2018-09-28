@@ -31,7 +31,7 @@ And make sure the following ports are open on the firewall:
 sudo ufw allow 22/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-sudo ufw allow 2473/tcp
+sudo ufw allow 4001/tcp
 sudo ufw allow 3473/tcp
 sudo ufw enable
 ```
