@@ -140,7 +140,7 @@ initialize_ipfs() {
 
     swarm_key="/key/swarm/psk/1.0.0/
 /base16/
-1c5b46b4190fb89496252b2a2b83c65ebc9da822e5cc59df97a876ef9d05b3eb"
+76cc320af0a997b4e495222b6f8216bf808d1d91cfca10db683197534f7ca592"
     echo "$swarm_key" | sudo tee -a ~/.ipfs/swarm.key > /dev/null
 
     user=`whoami`
