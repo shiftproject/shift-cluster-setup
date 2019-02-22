@@ -133,6 +133,22 @@ install_haproxy() {
     update_haproxy_config
 }
 
+update_phoenix_config() {
+    mkdir -p ~/.phoenix
+
+    conf="{
+    \"PhoenixPort\": 3473,
+    \"APIPort\": 2473,
+    \"Debug\": false,
+    \"Secret\": \"CHhOkjM9VHGyyeaS8W4kIg32U8u0vGxJ0b7MQSvZ\",
+    \"BlockchainPeers\": [\"80.209.230.17:9405\"],
+    \"Replication\": 3
+}"
+
+    mv ~/.phoenix/config.json ~/.phoenix/config-old.json
+    echo "$conf" | tee -a ~/.phoenix/config.json > /dev/null
+}
+
 initialize_ipfs() {
     ipfs init
     tmp=$(mktemp)
@@ -143,18 +159,7 @@ initialize_ipfs() {
 76cc320af0a997b4e495222b6f8216bf808d1d91cfca10db683197534f7ca592"
     echo "$swarm_key" | sudo tee -a ~/.ipfs/swarm.key > /dev/null
 
-    mkdir ~/.phoenix
-
-    conf="{
-    \"PhoenixPort\": 3473,
-    \"APIPort\": 2473,
-    \"Debug\": false,
-    \"Secret\": \"CHhOkjM9VHGyyeaS8W4kIg32U8u0vGxJ0b7MQSvZ\",
-    \"Replication\": 3
-}"
-
-    echo "$conf" | tee -a ~/.phoenix/config.json > /dev/null
-
+    update_phoenix_config
     user=`whoami`
     sudo chown $user:$user ~/.ipfs
     sudo chown $user:$user ~/.phoenix
@@ -176,6 +181,13 @@ update() {
     cd ~/bin
     rm ipfs phoenix-cluster
     install_binaries
+}
+
+update_phoenix() {
+    cd ~/bin
+    rm phoenix-cluster
+    install_binaries
+    update_phoenix_config
 }
 
 remove() {
@@ -223,6 +235,9 @@ case $1 in
     ;;
     "update")
       update
+    ;;
+    "update_phoenix")
+      update_phoenix
     ;;
     "remove")
       remove
