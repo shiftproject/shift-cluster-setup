@@ -252,7 +252,7 @@ case $1 in
       check
     ;;
     *)
-    echo "Available options: install, update, remove, start, stop, check"
+    echo "Available options: install, update, update_phoenix, remove, start, stop, check"
     echo "Usage: ./shift-cluster install"
     exit 1
     ;;
