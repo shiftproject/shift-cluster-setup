@@ -23,9 +23,9 @@ install_binaries() {
     fi
 
     if [ ! -f ~/bin/phoenix-cluster ] ; then
-        wget -O ~/bin/phoenix-cluster https://phoenix-test.shiftnrg.org/ipfs/Qmc1vTLnACgdoQz2sQo4dPqadamhq4hSssWfCFmD4gLrn9
+        wget -O ~/bin/phoenix-cluster https://phoenix-test.shiftnrg.org/ipfs/QmRNGpndPHrWWMnQg2jroknsu2KKFFuB464zi3mafCApof
         chmod +x ~/bin/phoenix-cluster
-        check_hash ~/bin/phoenix-cluster "a9ee37eb0ae1307992142e43ca935a3d59264d15"
+        check_hash ~/bin/phoenix-cluster "d1c6cb58aa7dc33032c21a838f631e2eb41a5a58"
     fi
 }
 
