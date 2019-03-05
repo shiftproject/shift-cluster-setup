@@ -23,9 +23,9 @@ install_binaries() {
     fi
 
     if [ ! -f ~/bin/phoenix-cluster ] ; then
-        wget -O ~/bin/phoenix-cluster https://phoenix-test.shiftnrg.org/ipfs/QmTt3WF92GV5aGdUFzRP23HyXDzxoJ7HHVmTYags2ykdzV
+        wget -O ~/bin/phoenix-cluster https://phoenix-test.shiftnrg.org/ipfs/QmXRiVAH6yhvWaxqsRJ7cAXjEbCVhBPnhhbb4qtVUuepXe
         chmod +x ~/bin/phoenix-cluster
-        check_hash ~/bin/phoenix-cluster "df47e7d9cf9ce8c0c5a839f38261c677000c293c"
+        check_hash ~/bin/phoenix-cluster "2a5b6a82dda6ed34e676dd4878902ad9526096ff"
     fi
 }
 
@@ -206,7 +206,7 @@ start() {
     sudo /etc/init.d/haproxy restart
     nohup ipfs daemon --enable-pubsub-experiment > ~/logs/ipfs.log 2>&1 &
     sleep 2
-    nohup phoenix-cluster --bootstrap=80.209.230.16:3473 --config=$HOME/.phoenix/config.json start > ~/logs/phoenix-cluster.log 2>&1 &
+    nohup phoenix-cluster --bootstrap=80.209.230.16:3473,80.209.230.13:3473,5.196.14.172:3473 --config=$HOME/.phoenix/config.json start > ~/logs/phoenix-cluster.log 2>&1 &
     echo "SHIFT cluster started"
 }
 
