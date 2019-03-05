@@ -32,9 +32,9 @@ install_binaries() {
 # Sets up a self-signed certificate for https
 install_certificate() {
     sudo openssl genrsa -out shift.key 2048
-    openssl req -nodes -newkey rsa:2048 -key shift.key -out shift.csr -subj "/C=NL/O=Shift/CN=shiftnrg.org"
+    sudo openssl req -nodes -newkey rsa:2048 -key shift.key -out shift.csr -subj "/C=NL/O=Shift/CN=shiftnrg.org"
     sudo openssl x509 -req -days 365 -in shift.csr -signkey shift.key -out shift.crt
-    sudo bash -c 'cat shift.key shift.crt >> /etc/ssl/private/shift.pem'
+    sudo bash -c 'cat shift.crt shift.key > /etc/ssl/private/shift.pem'
     rm -f shift.key shift.csr shift.crt
 }
 
