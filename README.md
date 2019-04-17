@@ -93,4 +93,4 @@ Checks if IPFS is running.
 
 ## Help
 
-If you are running into issues and need help, jump into the Shift ryver channel: https://shiftnrg.ryver.com/
+If you are running into issues and need help, jump into the Shift discord channel: https://discord.gg/fgzxABX
