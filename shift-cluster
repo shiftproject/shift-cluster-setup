@@ -1,13 +1,36 @@
-#!/bin/sh
+#!/bin/bash
 
 ##################s###################################################
 #    Make sure to run the setup described in the README.md first!    #
 ######################################################################
 
+init_data() {
+    reply=`curl -s https://install.shiftproject.com/dev`
+    bits=(`echo $reply | cut -d " " -f 1-`)
+
+    phoenix_ipfs_hash=${bits[1]}
+    phoenix_shasum=${bits[2]}
+    ipfs_ipfs_hash=${bits[4]}
+    ipfs_shasum=${bits[5]}
+    bootstrap_peers=${bits[7]}
+    blockchain_peers=${bits[9]}
+    phoenix_secret=${bits[11]}
+    swarm_key="${bits[13]}\n${bits[14]}\n${bits[15]}"
+}
+
 check_hash() {
     file_hash=`shasum $1 | cut -d " " -f1`
     if [ "$file_hash" != "$2" ] ; then
-        echo "HASH for $1 does not match expected hash"
+        echo "false"
+        return
+    fi
+
+    echo "true"
+}
+
+check_hash_and_exit() {
+    if [ "$(check_hash $1 $2)" == "false" ] ; then
+        echo "HASH for $1 does not match expected hash!"
         exit 1
     fi
 }
@@ -15,18 +38,26 @@ check_hash() {
 # Downloads the latest IPFS binaries from the Shift IPFS cluster – inception
 install_binaries() {
     mkdir -p ~/bin
-    echo "Downloading latest IPFS binaries…"
-    if [ ! -f ~/bin/ipfs ] ; then
-        wget -O ~/bin/ipfs https://phoenix-test.shiftnrg.org/ipfs/QmUqwjB6941nFxvZ23ccF6bWjFBkkNj9ZHm9UzocfwNpdK
-        chmod +x ~/bin/ipfs
-        check_hash ~/bin/ipfs "05c6ec63645ae5f40fe853fa64a630f24d6bc6fc"
+    echo "Downloading latest binaries…"
+
+    # hash does not match
+    if [ "$(check_hash ~/bin/ipfs $ipfs_shasum)" == "false" ] ; then
+        echo "Downloading latest IPFS…"
+        wget -O ~/bin/ipfs-new https://phoenix-test.shiftnrg.org/ipfs/$ipfs_ipfs_hash
+        chmod +x ~/bin/ipfs-new
+        check_hash_and_exit ~/bin/ipfs-new $ipfs_shasum
+        mv ~/bin/ipfs-new ~/bin/ipfs
     fi
 
-    if [ ! -f ~/bin/phoenix-cluster ] ; then
-        wget -O ~/bin/phoenix-cluster https://phoenix-test.shiftnrg.org/ipfs/QmZrQmJJSskogRbe43JUS7MDqE4hDMkydFHVGDLiwoUVCT
-        chmod +x ~/bin/phoenix-cluster
-        check_hash ~/bin/phoenix-cluster "62c7da00e89238b499e44d8f4d373226b421646c"
+    if [ "$(check_hash ~/bin/phoenix-cluster $phoenix_shasum)" == "false" ] ; then
+        echo "Downloading latest phoenix cluster…"
+        wget -O ~/bin/phoenix-cluster-new https://phoenix-test.shiftnrg.org/ipfs/$phoenix_ipfs_hash
+        chmod +x ~/bin/phoenix-cluster-new
+        check_hash_and_exit ~/bin/phoenix-cluster-new $phoenix_shasum
+        mv ~/bin/phoenix-cluster-new ~/bin/phoenix-cluster
     fi
+
+    echo "Done"
 }
 
 # Sets up a self-signed certificate for https
@@ -140,8 +171,8 @@ update_phoenix_config() {
     \"PhoenixPort\": 3473,
     \"APIPort\": 2473,
     \"Debug\": false,
-    \"Secret\": \"CHhOkjM9VHGyyeaS8W4kIg32U8u0vGxJ0b7MQSvZ\",
-    \"BlockchainPeers\": [\"80.209.230.17:9405\"],
+    \"Secret\": \"$phoenix_secret\",
+    \"BlockchainPeers\": [$blockchain_peers],
     \"Replication\": 3
 }"
 
@@ -154,10 +185,7 @@ initialize_ipfs() {
     tmp=$(mktemp)
     jq '.Bootstrap = []' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
     rm ~/.ipfs/swarm.key 2> /dev/null
-    swarm_key="/key/swarm/psk/1.0.0/
-/base16/
-76cc320af0a997b4e495222b6f8216bf808d1d91cfca10db683197534f7ca592"
-    echo "$swarm_key" | sudo tee -a ~/.ipfs/swarm.key > /dev/null
+    echo -e $swarm_key | sudo tee -a ~/.ipfs/swarm.key > /dev/null
 
     update_phoenix_config
     user=`whoami`
@@ -169,6 +197,7 @@ initialize_ipfs() {
 # @todo support different operating systems (linux only now)
 install() {
     cd ~/
+    init_data
     install_binaries
     initialize_ipfs
     install_certificate
@@ -179,7 +208,7 @@ install() {
 update() {
     stop
     cd ~/bin
-    rm ipfs phoenix-cluster
+    init_data
     install_binaries
 }
 
@@ -195,11 +224,12 @@ remove() {
 }
 
 start() {
+    init_data
     mkdir -p ~/logs
     sudo /etc/init.d/haproxy restart
     nohup ipfs daemon --enable-pubsub-experiment > ~/logs/ipfs.log 2>&1 &
     sleep 2
-    nohup phoenix-cluster --bootstrap=80.209.230.16:3473,80.209.230.13:3473,5.196.14.172:3473 --config=$HOME/.phoenix/config.json start > ~/logs/phoenix-cluster.log 2>&1 &
+    nohup phoenix-cluster --bootstrap=$bootstrap_peers --config=$HOME/.phoenix/config.json start > ~/logs/phoenix-cluster.log 2>&1 &
     echo "SHIFT cluster started"
 }
 
