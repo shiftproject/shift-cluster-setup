@@ -173,7 +173,8 @@ update_phoenix_config() {
     \"Debug\": false,
     \"Secret\": \"$phoenix_secret\",
     \"BlockchainPeers\": [$blockchain_peers],
-    \"Replication\": 3
+    \"Replication\": 3,
+    \"PingFailuresBeforeRemoval\": 10000
 }"
 
     mv ~/.phoenix/config.json ~/.phoenix/config-old.json
