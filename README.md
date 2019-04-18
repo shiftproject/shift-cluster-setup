@@ -38,7 +38,7 @@ sudo ufw enable
 
 ## Installation
 
-To install the `shift-cluster` command on linux run the following:
+To install or update the `shift-cluster` command on linux run the following:
 
 ```
 curl https://install.shiftproject.com | env=testnet bash
