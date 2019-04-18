@@ -214,14 +214,20 @@ update() {
 }
 
 remove() {
-    stop
-    rm ~/bin/ipfs
-    rm ~/bin/phoenix-cluster
-    sudo apt-get -y remove haproxy
-    sudo rm /etc/ssl/private/shift.pem
-    rm -rf ~/.ipfs
-    rm -rf ~/.phoenix
-    echo "SHIFT cluster successfully removed"
+    read -rp "Are you sure you want to remove? This will delete all content pinned in IPFS. [y/n] "
+
+    [[ ${REPLY,,} =~ ^(c|cancel)$ ]] && { echo "Selected Cancel"; exit 1; }
+
+    if [[ ${REPLY,,} =~ ^(y|yes)$ ]]; then
+        stop
+        rm ~/bin/ipfs
+        rm ~/bin/phoenix-cluster
+        sudo apt-get -y remove haproxy
+        sudo rm /etc/ssl/private/shift.pem
+        rm -rf ~/.ipfs
+        rm -rf ~/.phoenix
+        echo "SHIFT cluster successfully removed"
+    fi
 }
 
 start() {
