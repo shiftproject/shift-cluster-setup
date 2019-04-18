@@ -48,6 +48,28 @@ curl https://install.shiftproject.com | env=testnet bash
 
 This will place it in the bin directory of your home folder and make it executable. Make sure that `$HOME/bin` is included in your $PATH.
 
+After this manager script is installed to actually install the binaries and join the cluster you will have to run
+
+```
+shift-cluster install
+```
+
+then
+
+```
+shift-cluster start
+```
+
+## Verifying installation
+
+If the installation is successful and you have joined your IP address should show up in the list at https://storage-testnet.shiftproject.com/peers with `"Online": true`.
+
+Also `shift-cluster check` should report that IPFS is running, and `ipfs swarm peers` should list some other peers in the cluster. You can check if it is able to deliver content by requesting content directly from your IP:
+
+```
+http://{IP_ADDRESS}/ipns/shiftproject.com
+```
+
 ### Commands
 
 These are the available commands from `shift-cluster`.
