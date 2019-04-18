@@ -1,8 +1,10 @@
 # Shift Cluster Setup
 
-This script can be used to setup and install IPFS and IPFS cluster for Shift.
+This script can be used to setup and install the IPFS daemon and Phoenix cluster daemon (IPFS pin manager) for Shift.
 
 ## Prerequisites
+
+*Note: This has only been tested on Ubuntu.*
 
 Before running the script you should make sure your system is up to date and install dependencies as root:
 
