@@ -1,0 +1,23 @@
+#!/bin/bash
+mkdir -p ~/bin
+cd ~/bin
+path="/shift-cluster"
+
+if [ "$env" == "testnet" ] ; then
+    path="/shift-cluster-testnet"
+elif [ "$env" == "dev" ]; then
+    path="/shift-cluster-dev"
+fi
+
+echo "Installing shift-cluster..."
+wget -O shift-cluster-new https://install.shiftproject.com/$path
+if [ $? -ne 0 ] ; then
+    rm shift-cluster-new
+    echo "Error installing"
+    exit 1
+fi
+
+chmod +x shift-cluster-new
+mv shift-cluster-new shift-cluster
+echo "Done"
+exit 0
