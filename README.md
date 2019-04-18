@@ -4,7 +4,7 @@ This script can be used to setup and install the IPFS daemon and Phoenix cluster
 
 ## Prerequisites
 
-*Note: This has only been tested on Ubuntu.*
+*Note: This has only been tested on Ubuntu. Make sure you are using a clean install. If you had previously installed shift-cluster for testing purposes you will have to run `shift-cluster remove` before `shift-cluster install`.*
 
 Before running the script you should make sure your system is up to date and install dependencies as root:
 
