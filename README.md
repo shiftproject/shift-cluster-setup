@@ -36,16 +36,15 @@ sudo ufw allow 3473/tcp
 sudo ufw enable
 ```
 
-## Running
+## Installation
 
-After the prerequisites are done, you should copy the `shift-cluster` script to somewhere on your system inside your $PATH.
-
-Or you can run it using
+To install the `shift-cluster` command on linux run the following:
 
 ```
-chmod +x shift-cluster
-./shift-cluster [command]
+curl https://install.shiftproject.com | env=testnet bash
 ```
+
+This will place it in the bin directory of your home folder and make it executable. Make sure that `$HOME/bin` is included in your $PATH.
 
 ### Commands
 
@@ -57,7 +56,17 @@ These are the available commands from `shift-cluster`.
 shift-cluster install
 ```
 
-This installs the latest binaries to run a Shift IPFS cluster node.
+This installs the latest IPFS and phoenix-cluster binaries to run a Shift storage node.
+
+#### Update
+
+```
+shift-cluster update
+```
+
+This will ensure that the latest IPFS and phoenix-cluster binaries are up to date, and if they are not, it will download the latest ones.
+
+Note that it will not immediately start running the new code. For that you will need to run `shift-cluster restart`.
 
 #### Remove
 
@@ -65,7 +74,7 @@ This installs the latest binaries to run a Shift IPFS cluster node.
 shift-cluster remove
 ```
 
-Removes the installed files from the system.
+Removes all of the files installed as part of the installation process. Note that this will also remove any content pinned in your IPFS storage.
 
 #### Start
 
@@ -82,6 +91,14 @@ shift-cluster stop
 ```
 
 Stops the proxy and IPFS instance and disconnects from the cluster.
+
+#### Restart
+
+```
+shift-cluster restart
+```
+
+Stops then starts the running instance.
 
 #### Check
 
