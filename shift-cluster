@@ -230,7 +230,17 @@ remove() {
     fi
 }
 
+check_port_and_fail() {
+    netstat -tlnp 2>/dev/null | grep $1 -q
+    if [ $? -eq 0 ] ; then
+        echo "Unable to start: port $1 is in use by another process. Make sure to stop Apache or Nginx"
+        exit 1
+    fi
+}
+
 start() {
+    check_port_and_fail 80
+    check_port_and_fail 443
     init_data
     mkdir -p ~/logs
     sudo /etc/init.d/haproxy restart
