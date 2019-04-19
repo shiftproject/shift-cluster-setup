@@ -60,6 +60,94 @@ then
 shift-cluster start
 ```
 
+Note: If you already have a webserver listening on ports 80/443 on your server, please follow the instructions below (Nginx only, but can be adapted to Apache2)
+
+## (Optional) Using Nginx as a front reverse proxy
+
+Shift-cluster uses haproxy has a backend and frontend provider. The frontend listens on *:80 and *:443. In order to keep using these ports for other purposes/projets, you can put haproxy behind a reverse proxy using Nginx
+
+(Note: We assume you already have a Nginx server up and running)
+
+First step is to change the `/etc/haproxy/haproxy.cfg` configuration, by editing these two lines after `frontend https-in` :
+
+```
+frontend https-in
+    #bind *:443 ssl crt /etc/ssl/private/shift.pem
+    bind 127.0.0.1:8081
+```
+
+Here we remove haproxy SSL management for HTTPS (it will be handled by Nginx later), and we change the port 80 to 8081 (or any other port you have available, this port will be listening only on localhost, so there is no need to open any firewall rule)
+
+Now you can restart haproxy : `sudo service restart haproxy`
+
+Then, we need to create a nginx vhost that will forward the traffic from ports 80/443 to 127.0.0.1:8081 (or the port you've chosen)
+
+Here is an example configuration (create a file `/etc/nginx/conf.d/phoenix.conf`) , you will have to change the haproxy port you defined earlier (8081 if you followed this documentation) and the lines containing `server_name IP_OR_DOMAIN_NAME` by using your node domain/subdomain name (If you don't have one, just remove the server_name line entirely, your vhost will be reachable through your IP address then, but HTTPS might not work properly)
+
+### Method 1 : HTTP Vhost only (not recommended if you use a dedicated domain name for your phoenix cluster)
+
+```
+server {
+    listen *:80;
+    server_name DOMAIN_NAME;
+
+    access_log /var/log/nginx/phoenix_http_access.log;
+    error_log /var/log/nginx/phoenix_http_error.log;
+
+    root /var/www/html;
+    index index.html index.htm index.php;
+
+    location  / {
+        proxy_pass http://127.0.0.1:8081;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+
+### Method 2 : HTTPS Vhost with HTTP forwarding to HTTPS
+
+Please note that in order to have a valid HTTPS behaviour, you will have to generate certificates for a domain name (using Letsencrypt) and edit the directives `ssl_certificate PATH_TO_FULLCHAIN.PEM;` and `ssl_certificate_key PATH_TO_PRIVKEY.PEM;`.
+
+You can also adapt if you don't have a domain name with a self-signed certificate, but modern web browser will give you a warning :(
+
+```
+## Redirects all HTTP traffic (80) to the HTTPS host (443)
+server {
+  listen *:80;
+  server_name DOMAIN_NAME;
+  server_tokens off; ## Don't show the nginx version number, a security best practice
+  return 301 https://$http_host$request_uri;
+  access_log  /var/log/nginx/phoenix_http_access.log;
+  error_log   /var/log/nginx/phoenix_http_error.log;
+}
+
+server {
+    listen *:443 ssl;
+    server_name DOMAIN_NAME;
+    ssl_certificate PATH_TO_FULLCHAIN.PEM;
+    ssl_certificate_key PATH_TO_PRIVKEY.PEM;
+
+    access_log /var/log/nginx/phoenix_https_access.log;
+    error_log /var/log/nginx/phoenix_https_error.log;
+
+    root /var/www/html;
+    index index.html index.htm index.php;
+
+    location  / {
+        proxy_pass http://127.0.0.1:8081;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header HTTPS   $https;
+    }
+}
+```
+
 ## Verifying installation
 
 If the installation is successful and you have joined your IP address should show up in the list at https://storage-testnet.shiftproject.com/peers with `"Online": true`.
