@@ -253,9 +253,16 @@ stop() {
 check() {
     netstat -tlnp 2>/dev/null | grep 8080 -q
     if [ $? -eq 0 ] ; then
-        echo "IPFS is running"
+        echo "✓ IPFS is running"
     else
-        echo "IPFS is not running"
+        echo "✘ IPFS is not running"
+    fi
+
+    netstat -tlnp 2>/dev/null | grep 2473 -q
+    if [ $? -eq 0 ] ; then
+        echo "✓ PHOENIX is running"
+    else
+        echo "✘ PHOENIX is not running"
     fi
 }
 
