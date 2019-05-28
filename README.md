@@ -38,7 +38,7 @@ sudo ufw allow 3473/tcp
 sudo ufw enable
 ```
 
-Also make sure that `$HOME/bin` is included in your $PATH. If it is not you can add it to your `.bashrc` using:
+Also make sure that `$HOME/bin` is included in your `$PATH`. If it is not you can add it to your `.bashrc` using:
 
 ```
 echo "export PATH=$HOME/bin:$PATH" >> ~/.bashrc
