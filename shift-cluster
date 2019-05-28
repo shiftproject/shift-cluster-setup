@@ -16,6 +16,11 @@ init_data() {
     blockchain_peers=${bits[9]}
     phoenix_secret=${bits[11]}
     swarm_key="${bits[13]}\n${bits[14]}\n${bits[15]}"
+
+    if [ "$phoenix_secret" == "" ]; then
+        echo "Unable to fetch phoenix data"
+        exit 1
+    fi
 }
 
 check_hash() {
@@ -181,12 +186,16 @@ update_phoenix_config() {
     echo "$conf" | tee -a ~/.phoenix/config.json > /dev/null
 }
 
+update_swarm_key() {
+    rm ~/.ipfs/swarm.key 2> /dev/null
+    echo -e $swarm_key | sudo tee -a ~/.ipfs/swarm.key > /dev/null
+}
+
 initialize_ipfs() {
     ipfs init
     tmp=$(mktemp)
     jq '.Bootstrap = []' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
-    rm ~/.ipfs/swarm.key 2> /dev/null
-    echo -e $swarm_key | sudo tee -a ~/.ipfs/swarm.key > /dev/null
+    update_swarm_key
 
     update_phoenix_config
     user=`whoami`
@@ -206,10 +215,17 @@ install() {
     echo "SHIFT cluster successfully installed"
 }
 
+update_phoenix_secret() {
+    tmp=$(mktemp)
+    jq ".Secret = \"$phoenix_secret\"" ~/.phoenix/config.json > "$tmp" && mv "$tmp" ~/.phoenix/config.json
+}
+
 update() {
     stop
     cd ~/bin
     init_data
+    update_swarm_key
+    update_phoenix_secret
     install_binaries
 }
 
