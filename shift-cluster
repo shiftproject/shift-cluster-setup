@@ -187,7 +187,7 @@ update_phoenix_config() {
 }
 
 update_swarm_key() {
-    rm ~/.ipfs/swarm.key 2> /dev/null
+    rm -f ~/.ipfs/swarm.key
     echo -e $swarm_key | sudo tee -a ~/.ipfs/swarm.key > /dev/null
 }
 
