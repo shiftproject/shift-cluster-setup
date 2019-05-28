@@ -248,7 +248,8 @@ start() {
     sleep 2
     nohup phoenix-cluster --bootstrap=$bootstrap_peers --config=$HOME/.phoenix/config.json start > ~/logs/phoenix-cluster.log 2>&1 &
 
-    sleep 2
+    echo "Waiting 5 seconds..."
+    sleep 5
 
     netstat -tlnp 2>/dev/null | grep 2473 -q
     if [ $? -ne 0 ] ; then
