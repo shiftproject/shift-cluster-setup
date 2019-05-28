@@ -64,7 +64,7 @@ shift-cluster start
 
 If the installation is successful and you have joined your IP address should show up in the list at https://storage-testnet.shiftproject.com/peers with `"Online": true`.
 
-Also `shift-cluster check` should report that IPFS is running, and `ipfs swarm peers` should list some other peers in the cluster. You can check if it is able to deliver content by requesting content directly from your IP:
+Also `shift-cluster check` should report that IPFS and phoenix are running, and `ipfs swarm peers` should list some other peers in the cluster. You can check if it is able to deliver content by requesting content directly from your IP:
 
 ```
 http://{IP_ADDRESS}/ipns/shiftproject.com
@@ -130,7 +130,7 @@ Stops then starts the running instance.
 shift-cluster check
 ```
 
-Checks if IPFS is running.
+Returns the current status of IPFS and Phoenix
 
 ## Help
 
