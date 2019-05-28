@@ -5,7 +5,7 @@
 ######################################################################
 
 init_data() {
-    reply=`curl -s https://install.shiftproject.com/dev`
+    reply=`curl -s https://install.shiftproject.com/testnet`
     bits=(`echo $reply | cut -d " " -f 1-`)
 
     phoenix_ipfs_hash=${bits[1]}
