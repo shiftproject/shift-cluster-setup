@@ -55,7 +55,7 @@ To install or update the `shift-cluster` command on linux run the following:
 curl https://install.shiftproject.com | env=testnet bash
 ```
 
-This will place it in the bin directory of your home folder and make it executable. Make sure that `$HOME/bin` is included in your $PATH.
+This will place it in the bin directory of your home folder and make it executable. Make sure that `$HOME/bin` is included in your `$PATH`.
 
 After this manager script is installed to actually install the binaries and join the cluster you will have to run
 
