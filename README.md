@@ -74,7 +74,7 @@ If the installation is successful and you have joined your IP address should sho
 Also `shift-cluster check` should report that IPFS and phoenix are running, and `ipfs swarm peers` should list some other peers in the cluster. You can check if it is able to deliver content by requesting content directly from your IP:
 
 ```
-http://{IP_ADDRESS}/ipns/shiftproject.com
+http://{IP_ADDRESS}/ipfs/QmYGw6opSmBcX81PZ8t6CCWhvvq3rHPCbMnqJpFguyMeyU/img/logo.png
 ```
 
 ### Commands
