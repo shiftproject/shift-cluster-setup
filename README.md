@@ -38,6 +38,8 @@ sudo ufw allow 3473/tcp
 sudo ufw enable
 ```
 
+*Note that port 22 is not necessary for Phoenix or IPFS, but that is the default port for ssh access. If you use a different port for ssh then you should include that one instead*
+
 Also make sure that `$HOME/bin` is included in your `$PATH`. If it is not you can add it to your `.bashrc` using:
 
 ```
