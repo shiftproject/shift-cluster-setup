@@ -282,7 +282,7 @@ start() {
 stop() {
     sudo /etc/init.d/haproxy stop
     pkill -HUP -f ipfs
-    pkill -f phoenix
+    pkill -f phoenix-cluster
     echo "SHIFT cluster stopped"
 }
 
