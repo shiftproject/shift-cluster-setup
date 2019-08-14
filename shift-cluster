@@ -247,7 +247,7 @@ remove() {
 }
 
 check_port_and_fail() {
-    netstat -tlnp 2>/dev/null | grep $1 -q
+    netstat -tlnp 2>/dev/null | grep ":$1\s" -q
     if [ $? -eq 0 ] ; then
         echo "Unable to start: port $1 is in use by another process. Make sure to stop Apache or Nginx"
         exit 1
