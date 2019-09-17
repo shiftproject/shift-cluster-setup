@@ -5,6 +5,8 @@ path="/shift-cluster"
 
 if [ "$env" == "testnet" ] ; then
     path="/shift-cluster-testnet"
+if [ "$env" == "testnet-beta" ] ; then
+    path="/shift-cluster-testnet-beta"
 elif [ "$env" == "dev" ]; then
     path="/shift-cluster-dev"
 fi
