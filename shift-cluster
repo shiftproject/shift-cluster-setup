@@ -193,6 +193,7 @@ update_swarm_key() {
 
 update_ipfs_config() {
     # Reduce the number of connections to 500-600 (default is 600-900)
+    tmp=$(mktemp)
     jq '.Bootstrap = [] | .Swarm.ConnMgr.LowWater = 500 | .Swarm.ConnMgr.HighWater = 600' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
 }
 
