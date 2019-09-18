@@ -191,12 +191,17 @@ update_swarm_key() {
     echo -e $swarm_key | sudo tee -a ~/.ipfs/swarm.key > /dev/null
 }
 
+update_ipfs_config() {
+    # Reduce the number of connections to 500-600 (default is 600-900)
+    jq '.Bootstrap = [] | .Swarm.ConnMgr.LowWater = 500 | .Swarm.ConnMgr.HighWater = 600' ~/.ipfs/config
+}
+
 initialize_ipfs() {
     ipfs init
     tmp=$(mktemp)
-    jq '.Bootstrap = []' ~/.ipfs/config > "$tmp" && mv "$tmp" ~/.ipfs/config
     update_swarm_key
 
+    update_ipfs_config
     update_phoenix_config
     user=`whoami`
     sudo chown $user:$user ~/.ipfs
@@ -225,6 +230,7 @@ update() {
     cd ~/bin
     init_data
     update_swarm_key
+    update_ipfs_config
     update_phoenix_secret
     install_binaries
 }
